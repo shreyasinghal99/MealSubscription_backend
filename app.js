@@ -1,25 +1,29 @@
-const { json } = require('body-parser');
-const express = require('express');
-const cookieParser = require("cookie-parser")
+const express = require("express");
 const app = express();
-app.use(cookieParser())
+var cors = require('cors');
+app.use(cors()) ;
+app.use(express.static('public/build'));
 
-//middleware function used int post..convert data from frontend into json
-app.use(express.json())  //global
+const cookieParser=require('cookie-parser');
+//middleware func-> post, front-> json
+app.use(express.json()); //global middleware 
+const port=process.env.PORT || 5000;
+app.listen(port,function(){
+    console.log(`server listening on port ${port}`); 
+});
+app.use(cookieParser());
 
-app.listen(3000);
 
+//mini app
 const userRouter = require('./Routers/userRouter');
-const planRouter = require("./Routers/planRouter");
-const reviewRouter = require("./Routers/reviewRouter")
-const bookingRouter = require("./Routers/bookingRouter")
-//const authRouter = require('./Routers/authRouter');
-app.use('/user', userRouter)
-app.use('/plans',planRouter)
-app.use('/reviews',reviewRouter)
-app.use('/booking',bookingRouter)
-//app.use('/auth', authRouter)
-
+const planRouter = require('./Routers/planRouter');
+const reviewRouter = require('./Routers/reviewRouter');
+const bookingRouter=require('./Routers/bookingRouter');
+//base route , router to use
+app.use("/user", userRouter);
+app.use("/plans", planRouter);
+app.use("/review", reviewRouter);
+app.use('/booking',bookingRouter);
 
 
 
